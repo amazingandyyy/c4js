@@ -38,7 +38,7 @@ function play(){
             addNode(Player2, randomLocation());
         }
         playerCounter = !playerCounter;
-    }, 2);
+    }, 500);
 };
 
 function randomLocation(){
@@ -70,6 +70,7 @@ function printPlate(){
 }
 
 function addNode(symbol, location){
+    console.log("determinWinner", determinWinner(Plate))
     if(determinWinner(Plate) == emptySymbl){
         row = location[0];
         col = location[1];
@@ -99,26 +100,26 @@ function determinWinner(plate) {
     // reference: https://stackoverflow.com/questions/33181356/connect-four-game-checking-for-wins-js
     pl = plate;
     // Check up
-    for (r = 1; r < 4; r++)
-        for (c = 1; c < 7; c++)
+    for (r = 1; r <= 3; r++)
+        for (c = 1; c <= 7; c++)
             if (checkLine(pl[r][c], pl[r+1][c], pl[r+2][c], pl[r+3][c]))
                 return pl[r][c];
 
     // Check right
-    for (r = 1; r < 6; r++)
-        for (c = 1; c < 4; c++)
+    for (r = 1; r <= 6; r++)
+        for (c = 1; c <= 4; c++)
             if (checkLine(pl[r][c], pl[r][c+1], pl[r][c+2], pl[r][c+3]))
                 return pl[r][c];
 
     // // Check down-right
-    for (r = 1; r < 3; r++)
-        for (c = 1; c < 4; c++)
+    for (r = 1; r <= 3; r++)
+        for (c = 1; c <= 4; c++)
             if (checkLine(pl[r][c], pl[r+1][c+1], pl[r+2][c+2], pl[r+3][c+3]))
                 return pl[r][c];
 
     // // Check down-left
-    for (r = 4; r < 7; r++)
-        for (c = 1; c < 4; c++)
+    for (r = 4; r <= 6; r++)
+        for (c = 1; c <= 4; c++)
             if (checkLine(pl[r][c], pl[r-1][c+1], pl[r-2][c+2], pl[r-3][c+3]))
                 return pl[r][c];
 
