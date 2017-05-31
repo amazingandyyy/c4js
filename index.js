@@ -70,7 +70,6 @@ function printPlate(){
 }
 
 function addNode(symbol, location){
-    console.log("determinWinner", determinWinner(Plate))
     if(determinWinner(Plate) == emptySymbl){
         row = location[0];
         col = location[1];
