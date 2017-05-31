@@ -38,7 +38,7 @@ function play(){
             addNode(Player2, randomLocation());
         }
         playerCounter = !playerCounter;
-    }, 500);
+    }, 100);
 };
 
 function randomLocation(){
