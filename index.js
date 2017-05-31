@@ -3,20 +3,24 @@ var Row = 6;
 var Col = 7;
 var Player1 = "O"
 var Player2 = "X" ;
+var emptySymbl = '*'
 var machineInterval;
 var AvailableNodeOptionList = [];
+var totalStep;
 start();
 
 function initPlate() {
+    totalStep = 0;
     for (i = 1; i <= Row; i++) {
         Plate[i] = {};
         
         for (j = 1; j <= Col; j++) {
-            Plate[i][j] = "*";
+            Plate[i][j] = emptySymbl;
         }
     }
     for (j = 1; j <= Col; j++) {
-        AvailableNodeOptionList.push([6, j]);
+        AvailableNodeOptionList.push([Row, j]);
+        // [[6,1], [6,2], [6,3]...[6,7]]
     }
     printPlate();
 }
@@ -29,59 +33,68 @@ function start() {
 function play(){
     var playerCounter = true;
     machineInterval = setInterval(function(){
+        if(totalStep >= Row*Col) return gameFinished();
         if(playerCounter){
             addNode(Player1, randomLocation());
         }else{
             addNode(Player2, randomLocation());
         }
         playerCounter = !playerCounter;
-    }, 20);
+    }, 2);
 };
 
 function randomLocation(){
     var random = getRandom();
     var result = [AvailableNodeOptionList[random][0], AvailableNodeOptionList[random][1]];
     AvailableNodeOptionList[random][0]--;
-    if(result[0] <= 0 || result[1] <= 0) return randomLocation();
+    if(result[0] <= 0) return randomLocation();
     return result;
 }
 
 function getRandom(){
     var length = AvailableNodeOptionList.length;
     var result = Math.floor(Math.random() * length);
-    if (result > Row){
-        return getRandom()
-    }
     return result;
 }
 
 function printPlate(){
     console.log("      -    ")
-    console.log("======*======")
+    console.log(`======${emptySymbl}======`)
+    var row;
     for (i = 1; i <= Row; i++) {
-        var row = [];
+        row = [];
         for (j = 1; j <= Col; j++) {
-            row.push(Plate[i][j])
+            row.push(Plate[i][j]);
         }
-        console.log(row.join(" "))
+        console.log(row.join(' '));
     }
-    console.log("-------------")
+    console.log("-------------");
 }
 
 function addNode(symbol, location){
-    if(determinWinner(Plate) == "*"){
+    if(determinWinner(Plate) == emptySymbl){
         row = location[0];
         col = location[1];
+        totalStep++;
         Plate[row][col] = symbol;
         return printPlate();
     }
-    clearInterval(machineInterval);
-    console.log("Winner is: player", determinWinner(Plate), "!!!!");
-    console.log("Good job :)");
+    return gameFinished(determinWinner(Plate));
+}
+
+function gameFinished(winner){
+    if (winner == Player1 || winner == Player2) {
+        console.log("Winner is: player", winner, "!!!!");
+        console.log("Good job :)");
+    }else{
+        console.log("No Winner");
+        console.log("Still cool :)");
+    }
+    return clearInterval(machineInterval);
 }
 
 function checkLine(a,b,c,d) {
-    return ((a != "*") && (a ==b) && (a == c) && (a == d));
+    return ((a != emptySymbl) && (a ==b) && (a == c) && (a == d));
 }
 
 function determinWinner(plate) {
@@ -111,5 +124,5 @@ function determinWinner(plate) {
             if (checkLine(pl[r][c], pl[r-1][c+1], pl[r-2][c+2], pl[r-3][c+3]))
                 return pl[r][c];
 
-    return "*";
+    return emptySymbl;
 }
