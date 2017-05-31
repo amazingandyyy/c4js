@@ -4,7 +4,7 @@ var Col = 7;
 var Player1 = "O"
 var Player2 = "X" ;
 var emptySymbl = '*'
-var machineInterval;
+var botInterval;
 var AvailableNodeOptionList = [];
 var totalStep;
 start();
@@ -13,14 +13,12 @@ function initPlate() {
     totalStep = 0;
     for (i = 1; i <= Row; i++) {
         Plate[i] = {};
-        
         for (j = 1; j <= Col; j++) {
             Plate[i][j] = emptySymbl;
         }
     }
     for (j = 1; j <= Col; j++) {
-        AvailableNodeOptionList.push([Row, j]);
-        // [[6,1], [6,2], [6,3]...[6,7]]
+        AvailableNodeOptionList.push([Row, j]); // [[6,1], [6,2], [6,3]...[6,7]]
     }
     printPlate();
 }
@@ -32,8 +30,8 @@ function start() {
 
 function play(){
     var playerCounter = true;
-    machineInterval = setInterval(function(){
-        if(totalStep >= Row*Col) return gameFinished();
+    botInterval = setInterval(function(){
+        if(totalStep >= Row*Col) return gameFinished(); // draw happens, finish the game.
         if(playerCounter){
             addNode(Player1, randomLocation());
         }else{
@@ -90,7 +88,7 @@ function gameFinished(winner){
         console.log("No Winner");
         console.log("Still cool :)");
     }
-    return clearInterval(machineInterval);
+    return clearInterval(botInterval);
 }
 
 function checkLine(a,b,c,d) {
